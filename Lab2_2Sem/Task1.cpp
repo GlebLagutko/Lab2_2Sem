@@ -94,7 +94,7 @@ int main()
 	/*set<wstring> SetUnion = Union(Lake1,Lake2,Lake3);
 	set<wstring> SetIntersection = Intersection(Lake1, Lake2, Lake3);
 	set<wstring> SetIndividual = SymmetricDifference(Lake1, Lake2, Lake3);
-	set<wstring> SetFirst = Difference(Lake1,Lake2,Lake3);
+	set<wstring> SetFirst = Difference(Lake1,Lake2,Lake3) ; 
 	Print(SetUnion, SetIntersection, SetIndividual, SetFirst);*/
 
 	system("pause");
