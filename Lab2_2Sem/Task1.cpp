@@ -10,62 +10,64 @@
 
 using namespace std;
 
-void PrintSet(vector<wstring>& set)
+void CleanList(list<wstring>& set)
 {
-	for (auto it = set.begin(); it != set.end(); ++it)
-		wcout << *it << endl ;
+	for (auto it = set.begin(); it != set.end(); it++)
+		if (it->empty())
+		{
+			set.erase(it);
+			it = set.begin();
+		}
 }
 
-void Print(vector<wstring>& set1, vector<wstring>& set2, vector<wstring>& set3, vector<wstring>& set4)
+list<wstring> Difference(list<wstring>& set1, list<wstring>& set2, list<wstring>& set3)
 {
-	wcout << L" 1 :";
-	PrintSet(set1);
-	wcout << L" 2 :";
-	PrintSet(set2);
-	wcout << L" 3 :";
-	PrintSet(set3);
-	wcout << L" 4 :";
-	PrintSet(set4);
+	list<wstring> SetDifference1(set1.size());
+	list<wstring> SetDifference2(set1.size());
+	set_difference(set1.begin(), set1.end(), set2.begin(), set2.end(), SetDifference1.begin());	
+	SetDifference1.sort();
+	set_difference(SetDifference1.begin(), SetDifference1.end(), set3.begin(), set3.end(), SetDifference2.begin());
+	CleanList(SetDifference2);
+	return SetDifference2;
 }
 
-vector<wstring> Difference(vector<wstring>& set1, vector<wstring>& set2, vector<wstring>& set3)
+list<wstring> SymmetricDifference(list<wstring>& set1, list<wstring>& set2, list<wstring>& set3)
 {
-	vector<wstring> SetDifference;
-	SetDifference.end() = set_difference(set1.begin(), set1.end(), set2.begin(), set2.end(), SetDifference.begin());	
-	SetDifference.end() = set_difference(SetDifference.begin(), SetDifference.end(), set3.begin(), set3.end(), SetDifference.begin());
-
-	return SetDifference;
+	list<wstring> SetSymmetricDifference1(set1.size() + set2.size());
+	list<wstring> SetSymmetricDifference2(set1.size() + set2.size() + set3.size());
+    set_symmetric_difference(set1.begin(), set1.end(), set2.begin(), set2.end(), SetSymmetricDifference1.begin());
+	SetSymmetricDifference1.sort();
+	set_symmetric_difference(set3.begin(), set3.end(), SetSymmetricDifference1.begin(), SetSymmetricDifference1.end(), SetSymmetricDifference2.begin());
+	CleanList(SetSymmetricDifference2);
+	return SetSymmetricDifference2;
 }
 
-vector<wstring> SymmetricDifference(vector<wstring>& set1, vector<wstring>& set2, vector<wstring>& set3)
+list<wstring> Union(list<wstring>& set1, list<wstring>& set2, list<wstring>& set3)
 {
-	vector<wstring> SetSymmetricDifference;
-	SetSymmetricDifference.end() = set_symmetric_difference(set1.begin(), set1.end(), set2.begin(), set2.end(), SetSymmetricDifference.begin());
-	SetSymmetricDifference.end() = set_symmetric_difference(set3.begin(), set3.end(), SetSymmetricDifference.begin(), SetSymmetricDifference.end(), SetSymmetricDifference.begin());
-
-	return SetSymmetricDifference;
+	list<wstring> SetUnion1(set1.size() + set2.size() + set3.size());
+	list<wstring> SetUnion2(set1.size() + set2.size() + set3.size() + 1);
+	set_union(set1.begin(), set1.end(), set2.begin(), set2.end(), SetUnion1.begin());
+	SetUnion1.sort();
+    set_union(set3.begin(), set3.end(), SetUnion1.begin(), SetUnion1.end(), SetUnion2.begin());
+	CleanList(SetUnion2);
+	return SetUnion2;
 }
 
-vector<wstring> Union(vector<wstring>& set1, vector<wstring>& set2, vector<wstring>& set3)
+list<wstring> Intersection(list<wstring>& set1, list<wstring>& set2, list<wstring>& set3)
 {
-	vector<wstring> SetUnion(set1.size() + set2.size() + set3.size());
-	SetUnion.end() = set_union(set1.begin(), set1.end(), set2.begin(), set2.end(), SetUnion.begin());
-    SetUnion.end() = set_union(set3.begin(), set3.end(), SetUnion.begin(), SetUnion.end(), SetUnion.begin());
-	return SetUnion;
+	list<wstring> SetIntersection1(set1.size() + set2.size() + set3.size());
+	list<wstring> SetIntersection2(set1.size() + set2.size() + set3.size());
+	set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), SetIntersection1.begin());	
+	SetIntersection1.sort();
+	set_intersection(set3.begin(), set3.end(), SetIntersection1.begin(), SetIntersection1.end(), SetIntersection2.begin());
+	CleanList(SetIntersection2);
+	return SetIntersection2;
 }
 
-vector<wstring> Intersection(vector<wstring>& set1, vector<wstring>& set2, vector<wstring>& set3)
-{
-	vector<wstring> SetIntersection;
-	SetIntersection.end() = set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), SetIntersection.begin());	
-	SetIntersection.end() = set_intersection(set3.begin(), set3.end(), SetIntersection.begin(), SetIntersection.end(), SetIntersection.begin());
-	return SetIntersection;
-}
-
-vector<wstring> FillSet(wstring name)
+list<wstring> FillSet(wstring name)
 {
 	wifstream wifile;
-	vector<wstring> wset;
+	list<wstring> wset;
 	wstring string;
 	wifile.open(name);
 	wifile.imbue(locale(locale::empty(), new codecvt_utf8<wchar_t>));
@@ -75,28 +77,20 @@ vector<wstring> FillSet(wstring name)
 			if(!string.empty())
 			wset.push_back(string);
 	}
+	wset.sort();
 	return wset;
-}
-
-void SortVector(vector<wstring> vector)
-{
-	sort(vector.begin(),vector.end());
 }
 
 int main()
 {
-	vector<wstring> Lake1 = FillSet(L"C:\\Users\\Dell\\source\\repos\\Lab1_2Sem\\lake1.txt");
-	vector<wstring> Lake2 = FillSet(L"C:\\Users\\Dell\\source\\repos\\Lab1_2Sem\\lake2.txt");
-	vector<wstring> Lake3 = FillSet(L"C:\\Users\\Dell\\source\\repos\\Lab1_2Sem\\lake3.txt");
-	SortVector(Lake1);
-	SortVector(Lake2);
-	SortVector(Lake3);
-	vector<wstring> SetUnion = Union(Lake1,Lake2,Lake3);
-	vector<wstring> SetIntersection = Intersection(Lake1, Lake2, Lake3);
-	vector<wstring> SetIndividual = SymmetricDifference(Lake1, Lake2, Lake3);
-	vector<wstring> SetFirst = Difference(Lake1,Lake2,Lake3) ; 
-	Print(SetUnion, SetIntersection, SetIndividual, SetFirst);
-
+	list<wstring> Lake1 = FillSet(L"C:\\Users\\Dell\\source\\repos\\Lab1_2Sem\\lake1.txt");
+	list<wstring> Lake2 = FillSet(L"C:\\Users\\Dell\\source\\repos\\Lab1_2Sem\\lake2.txt");
+	list<wstring> Lake3 = FillSet(L"C:\\Users\\Dell\\source\\repos\\Lab1_2Sem\\lake3.txt");
+	
+	list<wstring> SetUnion = Union(Lake1,Lake2,Lake3);
+	list<wstring> SetFirst = Difference(Lake1, Lake2, Lake3);
+	list<wstring> SetIntersection = Intersection(Lake1, Lake2, Lake3);
+	list<wstring> SetIndividual = SymmetricDifference(Lake1, Lake2, Lake3);
 	system("pause");
 	return 0;
 }
