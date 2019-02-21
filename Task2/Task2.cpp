@@ -7,13 +7,15 @@
 #include <sstream>
 #include <codecvt>
 #include <list>
+#include <io.h>
+#include <fcntl.h>
 
 using namespace std;
 
 void PrintSet(multiset<wstring>& set)
 {
-	for (auto it = set.begin(); it != set.end(); ++it)
-		wcout << *it << endl;
+	for (auto it : set)
+		wcout << it << endl;
 }
 
 multiset<wstring> Union(multiset<wstring>& set1, multiset<wstring>& set2, multiset<wstring>& set3)
@@ -43,10 +45,14 @@ multiset<wstring> FillSet(wstring name)
 
 int main()
 {
+	_setmode(_fileno(stdout), _O_U16TEXT);
+	_setmode(_fileno(stdin), _O_U16TEXT);
+	_setmode(_fileno(stderr), _O_U16TEXT);
+
 	multiset<wstring> aquarium1 = FillSet(L"C:\\Users\\Dell\\source\\repos\\Lab2_2Sem\\aquarium1.txt");
 	multiset<wstring> aquarium2 = FillSet(L"C:\\Users\\Dell\\source\\repos\\Lab2_2Sem\\aquarium2.txt");
 	multiset<wstring> aquarium3 = FillSet(L"C:\\Users\\Dell\\source\\repos\\Lab2_2Sem\\aquarium3.txt");
 	multiset<wstring> set = Union(aquarium1, aquarium2, aquarium3);
 	PrintSet(set);
-	system("pause")
+	system("pause");
 }

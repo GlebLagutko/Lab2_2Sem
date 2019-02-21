@@ -7,13 +7,15 @@
 #include <sstream>
 #include <codecvt>
 #include <list>
+#include <io.h>
+#include <fcntl.h>
 
 using namespace std;
 
 void PrintSet(set<wstring>& set)
 {
-	for (auto it = set.begin(); it != set.end(); ++it)
-			wcout << *it << endl;
+	for (auto it : set)
+			wcout << it << endl;
 }
 
 void Answer(set<wstring>& set1, set<wstring>& set2, set<wstring>& set3, set<wstring>& set4)
@@ -91,6 +93,9 @@ set<wstring> FillSet(wstring name)
 
 int main()
 {
+	_setmode(_fileno(stdout), _O_U16TEXT);
+	_setmode(_fileno(stdin), _O_U16TEXT);
+	_setmode(_fileno(stderr), _O_U16TEXT);
 	set<wstring> Lake1 = FillSet(L"C:\\Users\\Dell\\source\\repos\\Lab1_2Sem\\lake1.txt");
 	set<wstring> Lake2 = FillSet(L"C:\\Users\\Dell\\source\\repos\\Lab1_2Sem\\lake2.txt");
 	set<wstring> Lake3 = FillSet(L"C:\\Users\\Dell\\source\\repos\\Lab1_2Sem\\lake3.txt");
