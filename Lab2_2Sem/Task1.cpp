@@ -15,6 +15,7 @@ using namespace std;
 void PrintSet(set<wstring>& set)
 {
 	for (auto it : set)
+		if(!it.empty())
 			wcout << it << endl;
 }
 
