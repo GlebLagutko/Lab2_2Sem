@@ -34,7 +34,7 @@ multiset<wstring> FillSet(wstring name)
 	wstring string;
 	wifile.open(name);
 	wifile.imbue(locale(locale::empty(), new codecvt_utf8<wchar_t>));
-	while (wifile.good())
+	while (!wifile.eof())
 	{
 		getline(wifile, string);
 		if (!string.empty())
